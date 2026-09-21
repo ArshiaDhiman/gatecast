@@ -1,0 +1,20 @@
+services:
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: gatecast
+      MYSQL_USER: gatecast
+      MYSQL_PASSWORD: gatecast
+    ports:
+      - "3307:3306"
+    volumes:
+      - gatecast_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  gatecast_mysql:

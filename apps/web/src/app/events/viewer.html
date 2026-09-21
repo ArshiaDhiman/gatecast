@@ -1,0 +1,14 @@
+@if (denied()) {
+<section class="denied">
+  <h1 class="denied__title">Not invited</h1>
+  <p class="denied__text">This invite link is not valid. Ask the organiser for a new one.</p>
+</section>
+} @else if (event()) {
+<section class="watch">
+  <video class="watch__video" #video controls></video>
+  <h1 class="watch__title">{{ event()!.title }}</h1>
+  <p class="watch__meta">Starts {{ event()!.startsAt | date: 'medium' }}</p>
+</section>
+} @else {
+<p class="loading">Loading…</p>
+}

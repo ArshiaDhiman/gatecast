@@ -1,0 +1,63 @@
+<section class="card">
+  <h1 class="card__title">Create an event</h1>
+  <form class="form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="field">
+      <label class="field__label" for="title">Title</label>
+      <input
+        class="field__input"
+        id="title"
+        formControlName="title"
+        placeholder="Q4 All Hands"
+      />
+    </div>
+    <div class="field">
+      <label class="field__label" for="streamUrl">Stream URL</label>
+      <input
+        class="field__input"
+        id="streamUrl"
+        formControlName="streamUrl"
+        placeholder="https://…/stream.m3u8"
+      />
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="startsAt">Starts at</label>
+      <input
+        class="field__input"
+        id="startsAt"
+        formControlName="startsAt"
+        type="datetime-local"
+      />
+    </div>
+
+    <button class="button" type="submit">Create</button>
+  </form>
+
+  @if (inviteToken()) {
+  <p class="invite">
+    <span class="invite__label">Invite link</span>
+    <a class="invite__link" [href]="'/watch/' + inviteToken()"
+      >/watch/{{ inviteToken() }}</a
+    >
+  </p>
+  }
+</section>
+
+<section class="events">
+  <h2 class="events__title">Your events</h2>
+  <ul class="events__list">
+    @for (event of events(); track event.id) {
+
+    <li>
+      <a class="event__link" routerLink="/events/{{event.id}}">
+        <span class="event__name">{{ event.title }}</span>
+        <span class="event__date"
+          >{{ event.startsAt | date: 'medium' }}</span
+        ></a
+      >
+    </li>
+    } @empty {
+    <li class="events__empty">No events yet.</li>
+    }
+  </ul>
+</section>
