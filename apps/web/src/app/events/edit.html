@@ -1,1 +1,69 @@
-<div>Single event page</div>
+@if (denied()) {
+<section class="card card--message">
+  <h1 class="card__title">Event not found</h1>
+  <p class="message__text">
+    This event does not exist, or it has been removed.
+  </p>
+  <a class="back" routerLink="/">Back to events</a>
+</section>
+} @else if (event(); as event) {
+<a class="back" routerLink="/">Back to events</a>
+
+<section class="card">
+  <h1 class="card__title">{{ event.title }}</h1>
+  <dl class="meta">
+    <dt class="meta__key">Starts at</dt>
+    <dd class="meta__value">{{ event.startsAt | date: 'medium' }}</dd>
+    <dt class="meta__key">Stream URL</dt>
+    <dd class="meta__value meta__value--url">{{ event.streamUrl }}</dd>
+  </dl>
+</section>
+
+<section class="invites">
+  <h2 class="invites__title">Invites</h2>
+  <ul class="invites__list">
+    @for (invite of event.invites; track invite.id) {
+    <li class="invite-row">
+      <span class="invite-row__token">/watch/{{ invite.token }}</span>
+      <button
+        class="revoke"
+        type="button"
+        aria-label="Revoke this invite"
+        (click)="openModal(invite.token)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M3 6h18" />
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+          <line x1="10" x2="10" y1="11" y2="17" />
+          <line x1="14" x2="14" y1="11" y2="17" />
+        </svg>
+        <span class="revoke__text">Revoke</span>
+      </button>
+    </li>
+    } @empty {
+    <li class="invites__empty">
+      No active invites. Nobody can watch this event.
+    </li>
+    }
+  </ul>
+</section>
+} @else {
+<p class="loading">Loading…</p>
+}
+
+<app-dialog
+  message="Revoke this invite? The link will stop working immediately."
+  (confirmed)="revokeInvite()"
+></app-dialog>

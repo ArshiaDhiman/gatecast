@@ -26,4 +26,8 @@ export class EventsService {
   findEventById(id: number) {
     return this.http.get<EventDto>(`/api/events/${id}`);
   }
+
+  revokeInvite(token: string) {
+    return this.http.delete(`/api/invites/${token}`);
+  }
 }
