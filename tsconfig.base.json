@@ -20,6 +20,9 @@
     "paths": {
       "@gatecast/shared": [
         "./libs/shared/src/index.ts"
+      ],
+      "@gatecast/auth": [
+        "./libs/auth/src/index.ts"
       ]
     }
   },

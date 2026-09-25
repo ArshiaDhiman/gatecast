@@ -1,7 +1,7 @@
 {
-  "name": "shared",
+  "name": "auth",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/src",
+  "sourceRoot": "libs/auth/src",
   "projectType": "library",
   "tags": ["type:util"],
   "targets": {
@@ -11,7 +11,7 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "options": {
-        "jestConfig": "libs/shared/jest.config.cts"
+        "jestConfig": "libs/auth/jest.config.cts"
       }
     }
   }

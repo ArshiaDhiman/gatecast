@@ -27,10 +27,14 @@ export default [
                     ],
                     depConstraints: [
                         {
-                            sourceTag: "*",
-                            onlyDependOnLibsWithTags: [
-                                "*"
-                            ]
+                            // libs stay framework-free so both api and web can import them
+                            sourceTag: "type:util",
+                            onlyDependOnLibsWithTags: ["type:util"],
+                            bannedExternalImports: ["@nestjs/*", "@angular/*", "sequelize*"]
+                        },
+                        {
+                            sourceTag: "type:app",
+                            onlyDependOnLibsWithTags: ["type:util"]
                         }
                     ]
                 }
