@@ -1,9 +1,11 @@
-import { Component, inject, signal, viewChild } from "@angular/core";
+import { Component, computed, inject, signal, viewChild } from "@angular/core";
 import { EventsService } from "./events.service";
 import { EventDto } from "@gatecast/shared";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { DatePipe } from "@angular/common";
 import { Dialog } from "./dialog";
+
+export type ModalType = "revoke" | "create";
 
 @Component({
   selector: "app-edit",
@@ -19,6 +21,7 @@ export class Edit {
   denied = signal(false);
   message = signal<string>("");
   pendingToken = signal<string | null>(null);
+  modalType = signal<ModalType>("revoke");
 
   private id = this.route.snapshot.paramMap.get("id") || "";
   private dialog = viewChild(Dialog);
@@ -36,9 +39,40 @@ export class Edit {
     });
   }
 
-  openModal(token: string) {
-    this.pendingToken.set(token);
+  dialogConfig = computed(() =>
+    this.modalType() === "revoke"
+      ? {
+          message:
+            "Revoke this invite? The link will stop working immediately.",
+          confirmLabel: "Revoke",
+        }
+      : {
+          message: "Create a new invite link for this event?",
+          confirmLabel: "Create",
+        },
+  );
+
+  openModal(type: ModalType, token?: string) {
+    this.modalType.set(type);
+    this.pendingToken.set(token ?? null);
     this.dialog()?.open();
+  }
+
+  onConfirm() {
+    if (this.modalType() === "revoke") this.revokeInvite();
+    else this.createInvite();
+  }
+
+  createInvite() {
+    this.message.set("");
+
+    this.eventsService.createInvite(Number(this.id)).subscribe({
+      next: () => {
+        this.message.set("Invite created");
+        this.load(this.id);
+      },
+      error: () => this.message.set("There was an issue creating the invite"),
+    });
   }
 
   revokeInvite() {

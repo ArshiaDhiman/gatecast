@@ -20,7 +20,13 @@
 </section>
 
 <section class="invites">
-  <h2 class="invites__title">Invites</h2>
+  <div class="invites__header">
+    <h2 class="invites__title">Invites</h2>
+    <button type="button" (click)="openModal('create' )" class="button">
+      Create invite
+    </button>
+  </div>
+
   <ul class="invites__list">
     @for (invite of event.invites; track invite.id) {
     <li class="invite-row">
@@ -29,7 +35,7 @@
         class="revoke"
         type="button"
         aria-label="Revoke this invite"
-        (click)="openModal(invite.token)"
+        (click)="openModal('revoke',invite.token)"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -64,6 +70,7 @@
 }
 
 <app-dialog
-  message="Revoke this invite? The link will stop working immediately."
-  (confirmed)="revokeInvite()"
+  [message]="dialogConfig().message"
+  [confirmLabel]="dialogConfig().confirmLabel"
+  (confirmed)="onConfirm()"
 ></app-dialog>

@@ -7,14 +7,14 @@ import { Component, ElementRef, input, output, viewChild } from "@angular/core";
 
     <div class="dialog__actions">
       <button class="dialog__button" type="button" (click)="cancel()">
-        Cancel
+        {{ cancelLabel() }}
       </button>
       <button
         class="dialog__button dialog__button--danger"
         type="button"
         (click)="confirm()"
       >
-        Revoke
+        {{ confirmLabel() }}
       </button>
     </div>
   </dialog>`,
@@ -22,6 +22,8 @@ import { Component, ElementRef, input, output, viewChild } from "@angular/core";
 })
 export class Dialog {
   message = input("Are you sure?");
+  confirmLabel = input("Revoke");
+  cancelLabel = input("Cancel");
   confirmed = output<void>();
 
   private dialogRef = viewChild<ElementRef<HTMLDialogElement>>("dialog");

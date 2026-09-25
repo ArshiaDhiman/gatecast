@@ -30,4 +30,8 @@ export class EventsService {
   revokeInvite(token: string) {
     return this.http.delete(`/api/invites/${token}`);
   }
+
+  createInvite(eventId: number) {
+    return this.http.post(`/api/events/${eventId}/invites`, {});
+  }
 }
