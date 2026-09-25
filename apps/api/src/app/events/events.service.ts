@@ -50,8 +50,8 @@ export class EventsService {
     if (count === 0) throw new NotFoundException("Invite not found");
   }
 
-  findEventById(id: number) {
-    const event = this.findByEventId(id);
+  async findEventById(id: number) {
+    const event = await this.findByEventId(id);
     if (!event) throw new NotFoundException("Event not found");
     return event;
   }
